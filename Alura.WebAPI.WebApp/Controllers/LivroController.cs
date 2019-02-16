@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Alura.ListaLeitura.WebApp.Controllers
 {
-    [Authorize]
+    //[Authorize]
     public class LivroController : Controller
     {
         private readonly IRepository<Livro> _repo;
@@ -57,6 +57,28 @@ namespace Alura.ListaLeitura.WebApp.Controllers
                 return NotFound();
             }
             return View(model.ToModel());
+        }
+
+        [HttpGet]
+        public IActionResult DetalhesJson(int id)
+        {
+            var model = _repo.Find(id);
+            if (model == null)
+            {
+                return NotFound();
+            }
+            return Json(model.ToModel());
+        }
+
+        [HttpGet]
+        public ActionResult<Livro> DetalhesJson2(int id)
+        {
+            var model = _repo.Find(id);
+            if (model == null)
+            {
+                return NotFound();
+            }
+            return model;
         }
 
         [HttpPost]
