@@ -45,29 +45,6 @@ namespace Alura.ListaLeitura.WebApp
                 options.LoginPath = "/Usuario/Login";
             });
 
-
-            var chaveToken = Configuration.GetSection("Configuracao").GetSection("ChaveToken").Value;
-
-            services.AddAuthentication(options =>
-            {
-                options.DefaultAuthenticateScheme = "JwtBearer";
-                options.DefaultChallengeScheme = "JwtBearer";
-            }).AddJwtBearer("JwtBearer", options =>
-            {
-                options.TokenValidationParameters = new TokenValidationParameters
-                {
-                    ValidateIssuer = true,
-                    ValidateAudience = true,
-                    ValidateLifetime = true,
-                    ValidateIssuerSigningKey = true,
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(chaveToken)),
-                    ClockSkew = TimeSpan.FromMinutes(5),
-                    ValidIssuer = "Alura.WebApp",
-                    ValidAudience = "Postman"
-                };
-            });
-
-
             services.AddTransient<IRepository<Livro>, RepositorioBaseEF<Livro>>();
 
             services.AddMvc(options => {
