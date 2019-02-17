@@ -2,12 +2,14 @@
 using Alura.ListaLeitura.Persistencia;
 using Alura.ListaLeitura.Seguranca;
 using Alura.WebAPI.WebApp.Formatters;
+using Alura.WebAPI.WebApp.HttpClients;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using System;
 
 namespace Alura.ListaLeitura.WebApp
 {
@@ -43,6 +45,8 @@ namespace Alura.ListaLeitura.WebApp
             });
 
             services.AddTransient<IRepository<Livro>, RepositorioBaseEF<Livro>>();
+            services.AddTransient<ILivroApiClient, LivroApiClient>();
+            services.AddTransient<IListaLeituraApiClient, ListaLeituraApiClient>();
 
             services.AddMvc(options => {
                 options.OutputFormatters.Add(new LivroCsvFormatter());
