@@ -3,6 +3,10 @@ using Alura.ListaLeitura.Persistencia;
 using Alura.ListaLeitura.Modelos;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
+using System.Net.Http;
+using System;
+using System.Threading.Tasks;
 
 namespace Alura.ListaLeitura.WebApp.Controllers
 {
@@ -10,10 +14,12 @@ namespace Alura.ListaLeitura.WebApp.Controllers
     public class LivroController : Controller
     {
         private readonly IRepository<Livro> _repo;
+        private readonly IConfiguration _configuration;
 
-        public LivroController(IRepository<Livro> repository)
+        public LivroController(IRepository<Livro> repository, IConfiguration configuration)
         {
             _repo = repository;
+            _configuration = configuration.GetSection("Configuracao");
         }
 
         [HttpGet]
@@ -49,14 +55,20 @@ namespace Alura.ListaLeitura.WebApp.Controllers
         }
 
         [HttpGet]
-        public IActionResult Detalhes(int id)
+        public async Task<IActionResult> Detalhes(int id)
         {
-            var model = _repo.Find(id);
+            HttpClient httpClient = new HttpClient();
+            httpClient.BaseAddress = new Uri(_configuration.GetSection("UriAPI").Value);
+
+            HttpResponseMessage resposta = await 
+                httpClient.GetAsync(string.Concat(_configuration.GetSection("GetLivros").Value, $"/{id}"));
+
+            var model = await resposta.Content.ReadAsAsync<LivroApi>();
             if (model == null)
             {
                 return NotFound();
             }
-            return View(model.ToModel());
+            return View(model.ToUpload());
         }
 
         [HttpGet]
