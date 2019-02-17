@@ -41,12 +41,18 @@ namespace Alura.ListaLeitura.WebApp.Controllers
         }
 
         [HttpGet]
-        public IActionResult ImagemCapa(int id)
+        public async Task<IActionResult> ImagemCapa(int id)
         {
-            byte[] img = _repo.All
-                .Where(l => l.Id == id)
-                .Select(l => l.ImagemCapa)
-                .FirstOrDefault();
+            HttpClient httpClient = new HttpClient();
+            httpClient.BaseAddress = new Uri(_configuration.GetSection("UriAPI").Value);
+
+            HttpResponseMessage resposta = await httpClient
+                .GetAsync(string.Format(_configuration.GetSection("GetByIdImagemCapa").Value, id));
+
+            resposta.EnsureSuccessStatusCode();
+
+            byte[] img = await resposta.Content.ReadAsByteArrayAsync();
+
             if (img != null)
             {
                 return File(img, "image/png");
@@ -62,6 +68,8 @@ namespace Alura.ListaLeitura.WebApp.Controllers
 
             HttpResponseMessage resposta = await httpClient
                 .GetAsync(string.Format(_configuration.GetSection("GetByIdLivros").Value, id));
+
+            resposta.EnsureSuccessStatusCode();
 
             var model = await resposta.Content.ReadAsAsync<LivroApi>();
             if (model == null)
