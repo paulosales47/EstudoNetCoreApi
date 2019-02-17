@@ -60,8 +60,8 @@ namespace Alura.ListaLeitura.WebApp.Controllers
             HttpClient httpClient = new HttpClient();
             httpClient.BaseAddress = new Uri(_configuration.GetSection("UriAPI").Value);
 
-            HttpResponseMessage resposta = await 
-                httpClient.GetAsync(string.Concat(_configuration.GetSection("GetLivros").Value, $"/{id}"));
+            HttpResponseMessage resposta = await httpClient
+                .GetAsync(string.Format(_configuration.GetSection("GetByIdLivros").Value, id));
 
             var model = await resposta.Content.ReadAsAsync<LivroApi>();
             if (model == null)
