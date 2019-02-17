@@ -26,13 +26,13 @@ namespace Alura.WebAPI.WebApp.Api
             if (model is null)
                 return NotFound();
 
-            return Ok(model.ToModel());
+            return Ok(model.ToApi());
         }
 
         [HttpGet()]
         public IActionResult Get()
         {
-            List<LivroUpload> livros = _repository.All.Select(l => l.ToModel()).ToList();
+            List<LivroApi> livros = _repository.All.Select(l => l.ToApi()).ToList();
 
             if (livros is null)
                 return NotFound();
