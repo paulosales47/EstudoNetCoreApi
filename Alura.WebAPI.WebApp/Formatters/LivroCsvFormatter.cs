@@ -17,24 +17,17 @@ namespace Alura.WebAPI.WebApp.Formatters
             this.SupportedMediaTypes.Add(MediaTypeHeaderValue.Parse("application/csv"));
             SupportedEncodings.Add(Encoding.UTF8);
         }
+        protected override bool CanWriteType(Type type)
+        {
+            return type == typeof(LivroApi);
+        }
 
         public override Task WriteResponseBodyAsync(OutputFormatterWriteContext context, Encoding selectedEncoding)
         {
             string livroCsv = string.Empty;
 
-            if(context.Object is LivroApi)
-            {
-                var livro = context.Object as LivroApi;
-                livroCsv = $"{livro.Titulo}, {livro.Subtitulo}, {livro.Autor}, {livro.Lista}";
-            }
-            if(context.Object is IEnumerable<LivroApi>)
-            {
-                foreach (var livro in context.Object as IEnumerable<LivroApi>)
-                {
-                    livroCsv += $"{livro.Titulo}, {livro.Subtitulo}, {livro.Autor}, {livro.Lista}\n";
-                }
-            }
-
+            var livro = context.Object as LivroApi;
+            livroCsv = $"{livro.Titulo}, {livro.Subtitulo}, {livro.Autor}, {livro.Lista}";
 
             using (var escritor = context.WriterFactory(context.HttpContext.Response.Body, selectedEncoding))
             {
