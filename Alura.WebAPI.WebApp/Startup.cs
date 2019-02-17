@@ -1,16 +1,13 @@
-﻿using Alura.ListaLeitura.Persistencia;
+﻿using Alura.ListaLeitura.Modelos;
+using Alura.ListaLeitura.Persistencia;
 using Alura.ListaLeitura.Seguranca;
-using Alura.ListaLeitura.Modelos;
+using Alura.WebAPI.WebApp.Formatters;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Alura.WebAPI.WebApp.Formatters;
-using Microsoft.IdentityModel.Tokens;
-using System.Text;
-using System;
 
 namespace Alura.ListaLeitura.WebApp
 {
