@@ -1,5 +1,4 @@
-﻿using Alura.ListaLeitura.Persistencia;
-using Alura.ListaLeitura.Modelos;
+﻿using Alura.ListaLeitura.Modelos;
 using Alura.ListaLeitura.WebApp.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -14,12 +13,10 @@ namespace Alura.ListaLeitura.WebApp.Controllers
     [Authorize]
     public class HomeController : Controller
     {
-        private readonly IRepository<Livro> _repo;
         private readonly IListaLeituraApiClient _apiClient;
 
-        public HomeController(IRepository<Livro> repository, IListaLeituraApiClient apiClient)
+        public HomeController(IListaLeituraApiClient apiClient)
         {
-            _repo = repository;
             _apiClient = apiClient;
         }
 

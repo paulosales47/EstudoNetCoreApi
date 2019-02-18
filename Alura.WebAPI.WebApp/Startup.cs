@@ -1,5 +1,4 @@
 ﻿using Alura.ListaLeitura.Modelos;
-using Alura.ListaLeitura.Persistencia;
 using Alura.ListaLeitura.Seguranca;
 using Alura.WebAPI.WebApp.Formatters;
 using Alura.WebAPI.WebApp.HttpClients;
@@ -24,10 +23,6 @@ namespace Alura.ListaLeitura.WebApp
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<LeituraContext>(options => {
-                options.UseSqlServer(Configuration.GetConnectionString("ListaLeitura"));
-            });
-
             services.AddDbContext<AuthDbContext>(options => {
                 options.UseSqlServer(Configuration.GetConnectionString("AuthDB"));
             });
@@ -44,7 +39,6 @@ namespace Alura.ListaLeitura.WebApp
                 options.LoginPath = "/Usuario/Login";
             });
 
-            services.AddTransient<IRepository<Livro>, RepositorioBaseEF<Livro>>();
             services.AddTransient<ILivroApiClient, LivroApiClient>();
             services.AddTransient<IListaLeituraApiClient, ListaLeituraApiClient>();
 
