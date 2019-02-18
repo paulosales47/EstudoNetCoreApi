@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using Leituras = Alura.ListaLeitura.Modelos.ListaLeitura;
 
@@ -21,6 +22,9 @@ namespace Alura.WebAPI.WebApp.HttpClients
 
         public async Task<Leituras> GetListaLeituraAsync(TipoListaLeitura tipo)
         {
+            _httpClient.DefaultRequestHeaders.Authorization = 
+                new AuthenticationHeaderValue("Bearer", "");
+            
             HttpResponseMessage resposta = await _httpClient
                 .GetAsync(string.Format(_configuration.GetSection("GetByIdListaLeitura").Value, tipo.ParaString()));
 

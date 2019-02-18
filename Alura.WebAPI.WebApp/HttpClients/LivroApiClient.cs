@@ -11,9 +11,12 @@ namespace Alura.WebAPI.WebApp.HttpClients
     {
         private readonly IConfiguration _configuration;
         private readonly HttpClient _httpClient;
+        private readonly IAuthApiClient _authApi;
+        private readonly String _token;
 
-        public LivroApiClient(IConfiguration configuration)
+        public LivroApiClient(IConfiguration configuration, IAuthApiClient authApi)
         {
+            _authApi = authApi;
             _configuration = configuration.GetSection("Configuracao");
             _httpClient = new HttpClient();
             _httpClient.BaseAddress = new Uri(_configuration.GetSection("UriAPI").Value);

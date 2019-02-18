@@ -41,6 +41,7 @@ namespace Alura.ListaLeitura.WebApp
 
             services.AddTransient<ILivroApiClient, LivroApiClient>();
             services.AddTransient<IListaLeituraApiClient, ListaLeituraApiClient>();
+            services.AddTransient<IAuthApiClient, AuthApiClient>();
 
             services.AddMvc(options => {
                 options.OutputFormatters.Add(new LivroCsvFormatter());
