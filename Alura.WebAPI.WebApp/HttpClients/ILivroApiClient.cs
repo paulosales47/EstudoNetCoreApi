@@ -8,5 +8,7 @@ namespace Alura.WebAPI.WebApp.HttpClients
         Task<byte[]> GetCapaAsync(int id);
         Task<LivroApi> GetLivroAsync(int id);
         Task DeleteLivroAsync(int id);
+        Task PostLivroAsync(LivroUpload livro);
+        Task PutLivroAsync(LivroUpload livro);
     }
 }
