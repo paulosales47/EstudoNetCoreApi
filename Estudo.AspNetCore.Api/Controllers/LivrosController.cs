@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace Estudo.AspNetCore.Api.Controllers
 {
-    //[Authorize]
+    [Authorize]
     [ApiController]
     [Route("api/v1/[controller]")]
     public class LivrosController : ControllerBase
