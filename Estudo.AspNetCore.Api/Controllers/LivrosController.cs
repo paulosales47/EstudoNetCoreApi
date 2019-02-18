@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace Estudo.AspNetCore.Api.Controllers
 {
-    [Authorize]
+    //[Authorize]
     [ApiController]
     [Route("api/v1/[controller]")]
     public class LivrosController : ControllerBase
@@ -19,7 +19,7 @@ namespace Estudo.AspNetCore.Api.Controllers
             _repository = repository;
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("{id}", Name = "GetLivro")]
         public IActionResult Get(int id)
         {
             Livro model = _repository.Find(id);
@@ -42,7 +42,7 @@ namespace Estudo.AspNetCore.Api.Controllers
         }
 
         [HttpPost]
-        public IActionResult Post([FromBody] LivroUpload livroUpload)
+        public IActionResult Post([FromForm] LivroUpload livroUpload)
         {
             if (ModelState.IsValid)
             {
@@ -50,10 +50,10 @@ namespace Estudo.AspNetCore.Api.Controllers
 
                 _repository.Incluir(livro);
 
-                string uri = Url.Action("Recuperar", new { id = livro.Id });
-
-
-                return Created(uri, livro);
+                return CreatedAtRoute(
+                    routeName: "GetLivro",
+                    routeValues: new { id = livro.Id },
+                    value: livro);
             }
             return BadRequest();
         }
@@ -67,7 +67,7 @@ namespace Estudo.AspNetCore.Api.Controllers
         }
 
         [HttpPut("{id}")]
-        public IActionResult Put(int id, [FromBody] LivroUpload model)
+        public IActionResult Put(int id, [FromForm] LivroUpload model)
         {
             model.Id = id;
 

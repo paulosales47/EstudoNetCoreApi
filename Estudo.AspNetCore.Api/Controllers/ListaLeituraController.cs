@@ -11,7 +11,7 @@ using Leituras = Alura.ListaLeitura.Modelos.ListaLeitura;
 
 namespace Estudo.AspNetCore.Api.Controllers
 {
-    [Authorize]
+    //[Authorize]
     [ApiController]
     [Route("api/v1/[controller]")]
     public class ListaLeituraController : ControllerBase
@@ -39,9 +39,7 @@ namespace Estudo.AspNetCore.Api.Controllers
         {
             Leituras listaLeitura = CriarLeituras(tipo);
 
-            var colecao = new List<Leituras> { listaLeitura };
-
-            return Ok(colecao);
+            return Ok(listaLeitura);
         }
 
         private Leituras CriarLeituras(TipoListaLeitura tipo)
