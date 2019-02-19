@@ -56,6 +56,7 @@ namespace Estudo.AspNetCore.Api
                 };
             });
 
+            services.AddApiVersioning();
 
             services.AddTransient<IRepository<Livro>, RepositorioBaseEF<Livro>>();
 
