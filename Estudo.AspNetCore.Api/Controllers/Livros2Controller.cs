@@ -10,7 +10,7 @@ namespace Estudo.AspNetCore.Api.Controllers
     [Authorize]
     [ApiController]
     [ApiVersion("2.0")]
-    [Route("api/[controller]")]
+    [Route("api/v{version:apiVersion}/[controller]")]
     public class Livros2Controller : ControllerBase
     {
         private readonly IRepository<Livro> _repository;
