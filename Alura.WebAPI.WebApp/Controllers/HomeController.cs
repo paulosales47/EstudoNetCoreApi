@@ -1,12 +1,10 @@
 ﻿using Alura.ListaLeitura.Modelos;
 using Alura.ListaLeitura.WebApp.Models;
+using Alura.WebAPI.WebApp.HttpClients;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using Leituras = Alura.ListaLeitura.Modelos.ListaLeitura;
-using Alura.WebAPI.WebApp.HttpClients;
 
 namespace Alura.ListaLeitura.WebApp.Controllers
 {

@@ -51,7 +51,7 @@ namespace Estudo.AspNetCore.AuthProvider.Controllers
                         audience: "Postman",
                         claims: direitos,
                         signingCredentials: credenciais,
-                        expires: DateTime.Now.AddMinutes(20)
+                        expires: DateTime.Now.AddMinutes(10)
                     );
 
                     string tokenString = new JwtSecurityTokenHandler().WriteToken(token);

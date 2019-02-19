@@ -1,8 +1,11 @@
 ﻿using Alura.ListaLeitura.Modelos;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using System;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Threading.Tasks;
 
 namespace Alura.WebAPI.WebApp.HttpClients
@@ -12,14 +15,21 @@ namespace Alura.WebAPI.WebApp.HttpClients
         private readonly IConfiguration _configuration;
         private readonly HttpClient _httpClient;
         private readonly IAuthApiClient _authApi;
-        private readonly String _token;
+        private readonly string _token;
+        private readonly IHttpContextAccessor _accessor;
 
-        public LivroApiClient(IConfiguration configuration, IAuthApiClient authApi)
+        public LivroApiClient(IConfiguration configuration, IAuthApiClient authApi, IHttpContextAccessor accessor)
         {
             _authApi = authApi;
+            _accessor =  accessor;
             _configuration = configuration.GetSection("Configuracao");
             _httpClient = new HttpClient();
             _httpClient.BaseAddress = new Uri(_configuration.GetSection("UriAPI").Value);
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue
+                (
+                    "Bearer"
+                    , _accessor.HttpContext.User.Claims.First(c => c.Type.Equals("Token")).Value
+                );
         }
 
         public async Task<LivroApi> GetLivroAsync(int id)

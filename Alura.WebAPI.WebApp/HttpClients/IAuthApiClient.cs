@@ -1,10 +1,10 @@
-﻿using System.Threading.Tasks;
-using Alura.ListaLeitura.Seguranca;
+﻿using Alura.ListaLeitura.Seguranca;
+using System.Threading.Tasks;
 
 namespace Alura.WebAPI.WebApp.HttpClients
 {
     public interface IAuthApiClient
     {
-        Task<string> PostLoginAsync(LoginModel login);
+        Task<LoginResult> GetToken(LoginModel login);
     }
 }

@@ -1,20 +1,18 @@
 ﻿using Alura.ListaLeitura.Seguranca;
 using Microsoft.Extensions.Configuration;
 using System;
-using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace Alura.WebAPI.WebApp.HttpClients
 {
-    public class AuthApiClient
+    public class AuthApiClient: IAuthApiClient
     {
         private readonly IConfiguration _configuration;
         private readonly HttpClient _httpClient;
-        private string _token;
-        
+        private LoginResult _loginResult;
+
         public AuthApiClient(IConfiguration configuration)
         {
             _configuration = configuration.GetSection("Configuracao");
@@ -27,31 +25,45 @@ namespace Alura.WebAPI.WebApp.HttpClients
             var resposta = await _httpClient
                 .PostAsJsonAsync(_configuration.GetSection("Login").Value, login);
 
-            resposta.EnsureSuccessStatusCode();
-            _token = await resposta.Content.ReadAsStringAsync();
+            _loginResult = new LoginResult
+            {
+                Succeeded = resposta.IsSuccessStatusCode,
+                Token = await resposta.Content.ReadAsStringAsync()
+
+            };
         }
 
-        private async Task<string> RecuperaToken()
+        public async Task<LoginResult> GetToken(LoginModel login)
         {
-            if (string.IsNullOrEmpty(_token))
+            if (_loginResult is null)
             {
-                await PostLoginAsync(null);
-                return _token;
+                await PostLoginAsync(login);
+
+                return _loginResult;
             }
             else
             {
                 var jwtHandler = new JwtSecurityTokenHandler();
-                var token = jwtHandler.ReadJwtToken(_token);
+                var token = jwtHandler.ReadJwtToken(_loginResult.Token);
                 var expireDate = token.ValidTo;
 
-                if(expireDate < DateTime.Now.AddMinutes(1))
+                if (expireDate < DateTime.Now.AddMinutes(1))
                 {
-                    
+                    return _loginResult;
+                }
+                else
+                {
+                    //IMPLEMENTAR REFRESH TOKEN
+                    throw new TimeoutException("O token de acesso expirou, por favor logue-se novamente");
                 }
 
-                return "";
             }
         }
+    }
 
+    public class LoginResult
+    {
+        public bool Succeeded { get; set; }
+        public string Token { get; set; }
     }
 }
