@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Versioning;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -56,7 +57,9 @@ namespace Estudo.AspNetCore.Api
                 };
             });
 
-            services.AddApiVersioning();
+            services.AddApiVersioning(options => {
+                options.ApiVersionReader = new HeaderApiVersionReader("api-version");
+            });
 
             services.AddTransient<IRepository<Livro>, RepositorioBaseEF<Livro>>();
 
