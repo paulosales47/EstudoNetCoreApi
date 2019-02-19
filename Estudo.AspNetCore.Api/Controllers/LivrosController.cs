@@ -10,7 +10,7 @@ namespace Estudo.AspNetCore.Api.Controllers
     [Authorize]
     [ApiController]
     [ApiVersion("1.0")]
-    [Route("api/v{version:apiVersion}/[controller]")]
+    [Route("api/[controller]")]
     public class LivrosController : ControllerBase
     {
         private readonly IRepository<Livro> _repository;
@@ -28,7 +28,7 @@ namespace Estudo.AspNetCore.Api.Controllers
             if (model is null)
                 return NotFound();
 
-            return Ok(model.ToApi());
+            return Ok(model.ToModel());
         }
 
         [HttpGet()]
