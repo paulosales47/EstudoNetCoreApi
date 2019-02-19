@@ -58,7 +58,10 @@ namespace Estudo.AspNetCore.Api
             });
 
             services.AddApiVersioning(options => {
-                options.ApiVersionReader = new HeaderApiVersionReader("api-version");
+                options.ApiVersionReader = ApiVersionReader.Combine(
+                    new QueryStringApiVersionReader("api-version"),
+                    new HeaderApiVersionReader("api-version")
+                );
             });
 
             services.AddTransient<IRepository<Livro>, RepositorioBaseEF<Livro>>();
