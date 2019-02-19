@@ -9,18 +9,18 @@ namespace Estudo.AspNetCore.Api.Controllers
 {
     [Authorize]
     [ApiController]
-    [ApiVersion("1.0")]
+    [ApiVersion("2.0")]
     [Route("api/v{version:apiVersion}/[controller]")]
-    public class LivrosController : ControllerBase
+    public class Livros2Controller : ControllerBase
     {
         private readonly IRepository<Livro> _repository;
 
-        public LivrosController(IRepository<Livro> repository)
+        public Livros2Controller(IRepository<Livro> repository)
         {
             _repository = repository;
         }
 
-        [HttpGet("{id}", Name = "GetLivro")]
+        [HttpGet("{id}", Name = "GetLivro2")]
         public IActionResult Get(int id)
         {
             Livro model = _repository.Find(id);
@@ -52,7 +52,7 @@ namespace Estudo.AspNetCore.Api.Controllers
                 _repository.Incluir(livro);
 
                 return CreatedAtRoute(
-                    routeName: "GetLivro",
+                    routeName: "GetLivro2",
                     routeValues: new { id = livro.Id },
                     value: livro);
             }
