@@ -13,7 +13,9 @@ namespace Estudo.AspNetCore.Api.Controllers
 {
     [Authorize]
     [ApiController]
-    [Route("api/v1/[controller]")]
+    [ApiVersion("1.0")]
+    [ApiVersion("2.0")]
+    [Route("api/v{version:apiVersion}/[controller]")]
     public class ListaLeituraController : ControllerBase
     {
         private readonly IRepository<Livro> _repository;
