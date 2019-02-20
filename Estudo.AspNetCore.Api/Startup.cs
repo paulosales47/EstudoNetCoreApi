@@ -67,8 +67,6 @@ namespace Estudo.AspNetCore.Api
                 options.SuppressModelStateInvalidFilter = true;
             });
 
-
-
             services.AddSwaggerGen(options => {
                 options.SwaggerDoc("v1.0", new Info
                 {
@@ -98,6 +96,8 @@ namespace Estudo.AspNetCore.Api
 
                 options.OperationFilter<AuthResponseOperationFilter>();
             });
+
+            services.AddCors();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -113,6 +113,7 @@ namespace Estudo.AspNetCore.Api
                 app.UseHsts();
             }
 
+            app.UseCors(options => options.WithOrigins("http://localhost"));
             app.UseAuthentication();
             app.UseHttpsRedirection();
             app.UseMvc();
