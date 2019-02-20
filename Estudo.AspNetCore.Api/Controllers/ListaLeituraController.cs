@@ -22,6 +22,7 @@ namespace Estudo.AspNetCore.Api.Controllers
             _repository = repository;
         }
 
+        [HttpGet]
         public IActionResult Get()
         {
             Leituras paraLer = CriarLeituras(TipoListaLeitura.ParaLer);
