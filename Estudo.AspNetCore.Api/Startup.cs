@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Alura.ListaLeitura.Modelos;
 using Alura.ListaLeitura.Persistencia;
+using Estudo.AspNetCore.Api.Filters;
 using Estudo.AspNetCore.Api.Formatters;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -63,6 +64,7 @@ namespace Estudo.AspNetCore.Api
 
             services.AddMvc(options => {
                 options.OutputFormatters.Add(new LivroCsvFormatter());
+                options.Filters.Add(typeof(ErrorResponseFilter));
             }).AddXmlSerializerFormatters();
         }
 

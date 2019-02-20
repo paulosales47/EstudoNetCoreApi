@@ -54,23 +54,14 @@ namespace Estudo.AspNetCore.Api.Controllers
         {
             if (ModelState.IsValid)
             {
-                try
-                {
-                    var livro = livroUpload.ToLivro();
+                var livro = livroUpload.ToLivro();
 
-                    _repository.Incluir(livro);
+                _repository.Incluir(livro);
 
-                    return CreatedAtRoute(
-                        routeName: "GetLivro2",
-                        routeValues: new { id = livro.Id },
-                        value: livro);
-                }
-                catch (Exception ex)
-                {
-                    var error = ErrorResponse.Create(ex);
-
-                    return StatusCode(500, error);
-                }
+                return CreatedAtRoute(
+                    routeName: "GetLivro2",
+                    routeValues: new { id = livro.Id },
+                    value: livro);
             }
             return BadRequest();
         }
