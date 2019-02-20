@@ -9,7 +9,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
+using Swashbuckle.AspNetCore.Swagger;
 using System;
+using System.Collections.Generic;
 using System.Text;
 
 namespace Estudo.AspNetCore.Api
@@ -64,6 +66,38 @@ namespace Estudo.AspNetCore.Api
             {
                 options.SuppressModelStateInvalidFilter = true;
             });
+
+
+
+            services.AddSwaggerGen(options => {
+                options.SwaggerDoc("v1.0", new Info
+                {
+                    Title = "Livros API",
+                    Description = "Documentação da API de livros",
+                    Version = "1.0"
+                });
+
+                options.SwaggerDoc("v2.0", new Info
+                {
+                    Title = "Livros API",
+                    Description = "Documentação da API de livros",
+                    Version = "2.0"
+                });
+
+                options.AddSecurityDefinition("Bearer", new ApiKeyScheme
+                {
+                    Name = "Authorization",
+                    In = "header",
+                    Type = "apiKey",
+                    Description = "Autenticação Bearer via JWT"
+                });
+                options.AddSecurityRequirement(
+                    new Dictionary<string, IEnumerable<string>> {
+                        { "Bearer", new string[] { } }
+                });
+
+                options.OperationFilter<AuthResponseOperationFilter>();
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -82,6 +116,12 @@ namespace Estudo.AspNetCore.Api
             app.UseAuthentication();
             app.UseHttpsRedirection();
             app.UseMvc();
+            app.UseSwagger();
+            app.UseSwaggerUI(swagger =>
+            {
+                swagger.SwaggerEndpoint("/swagger/v1.0/swagger.json", "v 1.0");
+                swagger.SwaggerEndpoint("/swagger/v2.0/swagger.json", "v 2.0");
+            });
         }
     }
 }

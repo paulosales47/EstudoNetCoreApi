@@ -1,5 +1,6 @@
 ﻿using Alura.ListaLeitura.Modelos;
 using Alura.ListaLeitura.Persistencia;
+using Estudo.AspNetCore.Api.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
@@ -10,6 +11,7 @@ namespace Estudo.AspNetCore.Api.Controllers
     [Authorize]
     [ApiController]
     [ApiVersion("1.0")]
+    [ApiExplorerSettings(GroupName = "v1.0")]
     [Route("api/v{version:apiVersion}/[controller]")]
     public class LivrosController : ControllerBase
     {
@@ -21,12 +23,14 @@ namespace Estudo.AspNetCore.Api.Controllers
         }
 
         [HttpGet("{id}", Name = "GetLivro")]
+        [ProducesResponseType(statusCode: 200, Type = typeof(LivroApi))]
+        [ProducesResponseType(statusCode: 500, Type = typeof(ErrorResponse))]
         public IActionResult Get(int id)
         {
             Livro model = _repository.Find(id);
 
             if (model is null)
-                return NotFound();
+                return NotFound(new { Message = "Nenhum livro localizado" });
 
             return Ok(model.ToApi());
         }
@@ -37,7 +41,7 @@ namespace Estudo.AspNetCore.Api.Controllers
             List<LivroApi> livros = _repository.All.Select(l => l.ToApi()).ToList();
 
             if (livros is null)
-                return NotFound();
+                return NotFound(new { Message = "Nenhum livro localizado"});
 
             return Ok(livros);
         }

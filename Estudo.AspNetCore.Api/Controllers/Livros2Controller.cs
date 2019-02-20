@@ -12,6 +12,7 @@ namespace Estudo.AspNetCore.Api.Controllers
     [Authorize]
     [ApiController]
     [ApiVersion("2.0")]
+    [ApiExplorerSettings(GroupName = "v2.0")]
     [Route("api/v{version:apiVersion}/[controller]")]
     public class Livros2Controller : ControllerBase
     {
