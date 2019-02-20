@@ -5,6 +5,7 @@ using Estudo.AspNetCore.Api.Formatters;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -12,6 +13,7 @@ using Microsoft.IdentityModel.Tokens;
 using Swashbuckle.AspNetCore.Swagger;
 using System;
 using System.Collections.Generic;
+using System.IO.Compression;
 using System.Text;
 
 namespace Estudo.AspNetCore.Api
@@ -28,6 +30,16 @@ namespace Estudo.AspNetCore.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            //Configura o modo de compressão
+            services.Configure<GzipCompressionProviderOptions>(
+                options => options.Level = CompressionLevel.Optimal);
+            services.AddResponseCompression(options =>
+            {
+                options.Providers.Add<GzipCompressionProvider>();
+                options.Providers.Add<BrotliCompressionProvider>();
+                options.EnableForHttps = true;
+            });
+
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
             services.AddDbContext<LeituraContext>(options => {
@@ -123,6 +135,7 @@ namespace Estudo.AspNetCore.Api
                 swagger.SwaggerEndpoint("/swagger/v1.0/swagger.json", "v 1.0");
                 swagger.SwaggerEndpoint("/swagger/v2.0/swagger.json", "v 2.0");
             });
+            app.UseResponseCompression();
         }
     }
 }
