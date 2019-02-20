@@ -33,11 +33,12 @@ namespace Estudo.AspNetCore.Api.Controllers
         }
 
         [HttpGet()]
-        public IActionResult Get([FromQuery] LivroFiltro filtro)
+        public IActionResult Get([FromQuery] LivroFiltro filtro, [FromQuery] LivroOrdem ordem)
         {
             List<LivroApi> livros = _repository
                 .All
                 .Filtrar(filtro)
+                .Ordenar(ordem)
                 .Select(l => l.ToApi()).ToList();
 
             if (livros is null)
