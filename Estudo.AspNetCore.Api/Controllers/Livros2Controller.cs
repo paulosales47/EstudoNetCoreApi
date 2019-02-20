@@ -3,6 +3,7 @@ using Alura.ListaLeitura.Persistencia;
 using Estudo.AspNetCore.Api.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -53,14 +54,23 @@ namespace Estudo.AspNetCore.Api.Controllers
         {
             if (ModelState.IsValid)
             {
-                var livro = livroUpload.ToLivro();
+                try
+                {
+                    var livro = livroUpload.ToLivro();
 
-                _repository.Incluir(livro);
+                    _repository.Incluir(livro);
 
-                return CreatedAtRoute(
-                    routeName: "GetLivro2",
-                    routeValues: new { id = livro.Id },
-                    value: livro);
+                    return CreatedAtRoute(
+                        routeName: "GetLivro2",
+                        routeValues: new { id = livro.Id },
+                        value: livro);
+                }
+                catch (Exception ex)
+                {
+                    var error = ErrorResponse.Create(ex);
+
+                    return StatusCode(500, error);
+                }
             }
             return BadRequest();
         }
