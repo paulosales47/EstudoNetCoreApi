@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace Estudo.AspNetCore.Api.Models
 {
@@ -9,6 +12,21 @@ namespace Estudo.AspNetCore.Api.Models
             return new ErrorResponse
             {
                 Error = Error.Create(exception)
+            };
+        }
+
+        public static ErrorResponse CreateFromModelState(ModelStateDictionary modelState)
+        {
+            var errors = modelState.Values.SelectMany(m => m.Errors);
+
+            return new ErrorResponse
+            {
+                Error = new Error
+                {
+                    Code = 400,
+                    Message = "Verifique os parametros enviados a API e/ou consulte a documentação",
+                    Details = Error.CreateFromModelErrors(errors)
+                }
             };
         }
 
@@ -33,6 +51,14 @@ namespace Estudo.AspNetCore.Api.Models
             };
         }
 
+        public static IEnumerable<string> CreateFromModelErrors(IEnumerable<ModelError> errors)
+        {
+            foreach (var error in errors)
+            {
+                yield return error.ErrorMessage;
+            }
+        }
+
         public int Code { get; set; }
 
         public string Message { get; set; }
@@ -40,5 +66,7 @@ namespace Estudo.AspNetCore.Api.Models
         public string Target { get; set; }
 
         public Error InnerError { get; set; }
+
+        public IEnumerable<string> Details { get; set; }
     }
 }

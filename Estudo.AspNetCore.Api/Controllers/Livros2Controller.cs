@@ -63,7 +63,7 @@ namespace Estudo.AspNetCore.Api.Controllers
                     routeValues: new { id = livro.Id },
                     value: livro);
             }
-            return BadRequest();
+            return BadRequest(ErrorResponse.CreateFromModelState(ModelState));
         }
 
         [HttpDelete("{id}")]
