@@ -1,5 +1,6 @@
 ﻿using Alura.ListaLeitura.Modelos;
 using Alura.ListaLeitura.Persistencia;
+using Estudo.AspNetCore.Api.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
@@ -32,9 +33,12 @@ namespace Estudo.AspNetCore.Api.Controllers
         }
 
         [HttpGet()]
-        public IActionResult Get()
+        public IActionResult Get([FromQuery] LivroFiltro filtro)
         {
-            List<LivroApi> livros = _repository.All.Select(l => l.ToApi()).ToList();
+            List<LivroApi> livros = _repository
+                .All
+                .Filtrar(filtro)
+                .Select(l => l.ToApi()).ToList();
 
             if (livros is null)
                 return NotFound();
