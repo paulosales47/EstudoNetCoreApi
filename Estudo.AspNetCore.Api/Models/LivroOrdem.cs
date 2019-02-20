@@ -9,7 +9,7 @@ namespace Estudo.AspNetCore.Api.Models
 {
     public class LivroOrdem
     {
-        public string Ordenacao { get; set; }
+        public string Ordenacao { get; set; } = "Id";
     }
 
     public static class LivroOrdemExtensions
