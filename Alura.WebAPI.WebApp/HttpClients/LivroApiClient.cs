@@ -14,13 +14,10 @@ namespace Alura.WebAPI.WebApp.HttpClients
     {
         private readonly IConfiguration _configuration;
         private readonly HttpClient _httpClient;
-        private readonly IAuthApiClient _authApi;
-        private readonly string _token;
         private readonly IHttpContextAccessor _accessor;
 
-        public LivroApiClient(IConfiguration configuration, IAuthApiClient authApi, IHttpContextAccessor accessor)
+        public LivroApiClient(IConfiguration configuration, IHttpContextAccessor accessor)
         {
-            _authApi = authApi;
             _accessor =  accessor;
             _configuration = configuration.GetSection("Configuracao");
             _httpClient = new HttpClient();
