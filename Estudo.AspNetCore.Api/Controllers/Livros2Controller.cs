@@ -33,18 +33,19 @@ namespace Estudo.AspNetCore.Api.Controllers
         }
 
         [HttpGet()]
-        public IActionResult Get([FromQuery] LivroFiltro filtro, [FromQuery] LivroOrdem ordem)
+        public IActionResult Get([FromQuery] LivroFiltro filtro, [FromQuery] LivroOrdem ordem, [FromQuery] LivroPaginacao paginacao)
         {
-            List<LivroApi> livros = _repository
+            Paginacao livroPaginado = _repository
                 .All
                 .Filtrar(filtro)
                 .Ordenar(ordem)
-                .Select(l => l.ToApi()).ToList();
+                .Select(l => l.ToApi())
+                .Paginar(paginacao);
 
-            if (livros is null)
+            if (livroPaginado is null)
                 return NotFound();
 
-            return Ok(livros);
+            return Ok(livroPaginado);
         }
 
         [HttpPost]
